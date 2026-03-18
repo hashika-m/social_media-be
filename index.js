@@ -35,7 +35,7 @@ const PORT=process.env.PORT ||8000
 // app.use(cors())
 app.use(express.json())
 app.use(cors({
-    origin:"https://cerulean-tulumba-a25f72.netlify.app",
+    origin:process.env.FRONTEND_URL,
     credentials:true
 }))
 
