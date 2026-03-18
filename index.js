@@ -33,6 +33,7 @@ const PORT=process.env.PORT ||8000
 
 // // middleware
 app.use(cors())
+app.use(express.json())
 // app.use(cors({
 //     origin:process.env.FRONTEND_URL,
 //     credentials:true
