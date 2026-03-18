@@ -33,10 +33,23 @@ const PORT=process.env.PORT ||8000
 
 // // middleware
 // app.use(cors())
-app.use(cors({
-    origin:process.env.FRONTEND_URL,
-    credentials:true
-}))
+// app.use(cors({
+//     origin:process.env.FRONTEND_URL,
+//     credentials:true
+// }))
+
+// allow frontend URL with credentials
+const corsOptions = {
+    origin: process.env.FRONTEND_URL, // Netlify URL
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+};
+
+app.use(cors(corsOptions));
+
+// handle preflight requests for all routes
+app.options("*", cors(corsOptions));
 app.use(express.json())
 app.use(cookieParser())
 
