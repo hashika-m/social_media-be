@@ -2,6 +2,7 @@ import Post from "../models/Post.js"
 import uploadOnCloudinary from "../config/cloudinary.js"
 import User from "../models/User.js"
 import Notification from "../models/Notification.js"
+import { getSocketId, io } from "../socket.js"
 
 export const getCurrentUser = async (req, res) => {
   try {
@@ -72,7 +73,7 @@ export const editProfile = async (req, res) => {
     const file = req.files?.profilePic?.[0]
 
     if (file) {
-      const profilePic = await uploadOnCloudinary(file.path)
+      profilePic = await uploadOnCloudinary(file.path)
       user.profilePic = profilePic
     }
 
@@ -222,7 +223,10 @@ export const getAllNotification = async (req, res) => {
   try {
     const notifications = await Notification.find({
       receiver: req.userId
-    }).populate('sender receiver post loop')
+    }).populate("sender")
+      .populate("receiver")
+      .populate("post")
+      .populate("loop")
     // console.log('allNotifications',notifications)
 
     return res.status(200).json(notifications)
@@ -237,8 +241,10 @@ export const markAsRead = async (req, res) => {
     // const {notificationId}=req.body
 
     const notificationId = req.params.notificationId
-    const notification = await Notification.findById(notificationId).
-      populate('sender receiver post loop')
+    const notification = await Notification.findById(notificationId).populate("sender")
+      .populate("receiver")
+      .populate("post")
+      .populate("loop")
     notification.isRead = true
     notification.save()
     // if (Array.isArray(notificationId)) {
