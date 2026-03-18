@@ -10,7 +10,7 @@ const server = http.createServer(app)
 
 const io = new Server(server, {
     cors: {
-        origin:process.env.FRONTEND_URL,
+        origin:"https://cerulean-tulumba-a25f72.netlify.app",
         methods: ["GET", "POST"],
         credentials:true
     }
